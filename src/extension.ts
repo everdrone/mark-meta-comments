@@ -2,8 +2,6 @@ import * as vscode from "vscode";
 
 // this method is called when vs code is activated
 export function activate(context: vscode.ExtensionContext) {
-  console.log("decorator sample is activated");
-
   let timeout: NodeJS.Timer | undefined = undefined;
 
   const lineNumberColor = new vscode.ThemeColor("editorLineNumber.foreground");
@@ -14,10 +12,8 @@ export function activate(context: vscode.ExtensionContext) {
   // marks without lines
   const markDecorationType = vscode.window.createTextEditorDecorationType({
     isWholeLine: true,
-    // border: "1px solid",
-    // borderColor: "rgba(255, 0, 0, 1)",
     fontWeight: "bold",
-    color: activeLineNumberColor,
+    // color: lineNumberColor,
   });
 
   // marks with a - line above!
@@ -26,18 +22,19 @@ export function activate(context: vscode.ExtensionContext) {
     fontWeight: "bold",
     border: `
 		border: none;
-		border-top: 2px solid;
-		margin-top: -1px;
+		border-top: 1px solid;
+		margin-top: 0px;
 		`,
+    // margin-top: -1px;
     borderColor: lineNumberColor,
-    color: activeLineNumberColor,
+    // color: lineNumberColor,
   });
 
   // bold section of the mark comment
   const markBoldDecorationType = vscode.window.createTextEditorDecorationType({
     isWholeLine: false,
     fontWeight: "normal !important",
-    color: lineNumberColor,
+    // color: lineNumberColor,
   });
 
   let activeEditor = vscode.window.activeTextEditor;
@@ -47,9 +44,12 @@ export function activate(context: vscode.ExtensionContext) {
       return;
     }
 
-    const regex = /(((\/\/|\#)\s*MARK\s*:)\s*[^-])/gi;
-    const lineRegex = /((\/\/|\#)\s*MARK\s*:\s*-)/gi;
-    const boldRegex = /(?:(\/\/|\#)\s*MARK\s*:\s*-)(.*)$/gim;
+    const regex = /(((\/\/|\#)\s*([A-Z][A-Z0-9_-\s]+)\s*:)\s*[^-])/g;
+    const lineRegex = /((\/\/|\#)\s*([A-Z][A-Z0-9_-\s]+)\s*:\s*-)/g;
+
+    // const regex = /(((\/\/|\#)\s*MARK\s*:)\s*[^-])/gi;
+    // const lineRegex = /((\/\/|\#)\s*MARK\s*:\s*-)/gi;
+    // const boldRegex = /(?:(\/\/|\#)\s*MARK\s*:\s*-)(.*)$/gim;
     const text = activeEditor.document.getText();
 
     const marks: vscode.DecorationOptions[] = [];
