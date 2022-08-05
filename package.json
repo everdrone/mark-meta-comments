@@ -18,19 +18,7 @@
 		"*"
 	],
 	"main": "./out/extension.js",
-	"contributes": {
-		"colors": [
-			{
-				"id": "markmetacomments.lineColor",
-				"description": "Background decoration color for large numbers",
-				"defaults": {
-					"dark": "#FF000055",
-					"light": "#FF000055",
-					"highContrast": "#FF000055"
-				}
-			}
-		]
-	},
+	"contributes": {},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
