@@ -1,13 +1,16 @@
 import * as vscode from "vscode";
 
-// this method is called when vs code is activated
 export function activate(context: vscode.ExtensionContext) {
   let timeout: NodeJS.Timer | undefined = undefined;
+
+  // MARK: - Colors
 
   const lineNumberColor = new vscode.ThemeColor("editorLineNumber.foreground");
   const activeLineNumberColor = new vscode.ThemeColor(
     "editorLineNumber.activeForeground"
   );
+
+  // MARK: - Decorator types
 
   // marks without lines
   const markDecorationType = vscode.window.createTextEditorDecorationType({
@@ -44,20 +47,23 @@ export function activate(context: vscode.ExtensionContext) {
       return;
     }
 
-    const regex = /(((\/\/|\#)\s*([A-Z][A-Z0-9_-\s]+)\s*:)\s*[^-])/g;
-    const lineRegex = /((\/\/|\#)\s*([A-Z][A-Z0-9_-\s]+)\s*:\s*-)/g;
-
-    // const regex = /(((\/\/|\#)\s*MARK\s*:)\s*[^-])/gi;
-    // const lineRegex = /((\/\/|\#)\s*MARK\s*:\s*-)/gi;
-    // const boldRegex = /(?:(\/\/|\#)\s*MARK\s*:\s*-)(.*)$/gim;
     const text = activeEditor.document.getText();
 
-    const marks: vscode.DecorationOptions[] = [];
-    const markLines: vscode.DecorationOptions[] = [];
+    const simpleMarkRegex =
+      /^[\t ]*(((\/\/|\#)\s*([A-Z][A-Z0-9_-\s]+)\s*:)\s*[^-])/gm;
+    const lineMarkRegex = /^[\t ]*((\/\/|\#)\s*([A-Z][A-Z0-9_-\s]+)\s*:\s*-)/gm;
+
+    // const simpleMarkRegex = /(((\/\/|\#)\s*([A-Z][A-Z0-9_-\s]+)\s*:)\s*[^-])/g;
+    // const lineMarkRegex = /((\/\/|\#)\s*([A-Z][A-Z0-9_-\s]+)\s*:\s*-)/g;
+
+    const simpleMarks: vscode.DecorationOptions[] = [];
+    const lineMarks: vscode.DecorationOptions[] = [];
     const marksBold: vscode.DecorationOptions[] = [];
 
+    // MARK: - Match simple marks
+
     let match;
-    while ((match = regex.exec(text))) {
+    while ((match = simpleMarkRegex.exec(text))) {
       const startPos = activeEditor.document.positionAt(match.index);
       const endPos = activeEditor.document.positionAt(
         match.index + match[2].length
@@ -65,15 +71,16 @@ export function activate(context: vscode.ExtensionContext) {
 
       const decoration = {
         range: new vscode.Range(startPos, endPos),
-        // hoverMessage: "Number **" + match[0] + "**",
       };
 
-      marks.push(decoration);
+      simpleMarks.push(decoration);
       marksBold.push(decoration);
     }
 
+    // MARK: - Match marks with lines
+
     match = null;
-    while ((match = lineRegex.exec(text))) {
+    while ((match = lineMarkRegex.exec(text))) {
       const startPos = activeEditor.document.positionAt(match.index);
       const endPos = activeEditor.document.positionAt(
         match.index + match[0].length
@@ -81,15 +88,14 @@ export function activate(context: vscode.ExtensionContext) {
 
       const decoration = {
         range: new vscode.Range(startPos, endPos),
-        // hoverMessage: "Number **" + match[0] + "**",
       };
 
-      markLines.push(decoration);
+      lineMarks.push(decoration);
       marksBold.push(decoration);
     }
 
-    activeEditor.setDecorations(markLineDecorationType, markLines);
-    activeEditor.setDecorations(markDecorationType, marks);
+    activeEditor.setDecorations(markLineDecorationType, lineMarks);
+    activeEditor.setDecorations(markDecorationType, simpleMarks);
     activeEditor.setDecorations(markBoldDecorationType, marksBold);
   }
 
