@@ -2,7 +2,7 @@
 
 This extension emulates XCode's `// MARK: -` comment decorations.
 
-<img src="https://github.com/everdrone/mark-meta-comments/blob/main/.github/media/screenshot.png" alt="A MARK comment separating one section of code from the next." />
+![A MARK comment separating one section of code from the next.](.github/media/screenshot.png)
 
 ###### Theme: [Sequoia Moonlight](https://marketplace.visualstudio.com/items?itemName=wicked-labs.sequoia)
 
