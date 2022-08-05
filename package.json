@@ -8,11 +8,29 @@
 	"engines": {
 		"vscode": "^1.32.0"
 	},
+	"icon": ".github/media/icon.png",
+	"galleryBanner": {
+		"color": "#202026",
+		"theme": "dark"
+	},
 	"repository": {
+		"type": "git",
+		"url": "https://github.com/everdrone/mark-meta-comments"
+	},
+	"bugs": {
+		"type": "git",
 		"url": "https://github.com/everdrone/mark-meta-comments"
 	},
 	"categories": [
 		"Other"
+	],
+	"keywords": [
+		"everdrone",
+		"xcode mark",
+		"meta comments",
+		"mark comment",
+		"meta comment",
+		"xcode comment"
 	],
 	"activationEvents": [
 		"onStartupFinished"

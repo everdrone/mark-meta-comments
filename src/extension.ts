@@ -50,8 +50,9 @@ export function activate(context: vscode.ExtensionContext) {
     const text = activeEditor.document.getText();
 
     const simpleMarkRegex =
-      /^[\t ]*(((\/\/|\#)\s*([A-Z][A-Z0-9_-\s]+)\s*:)\s*[^-])/gm;
-    const lineMarkRegex = /^[\t ]*((\/\/|\#)\s*([A-Z][A-Z0-9_-\s]+)\s*:\s*-)/gm;
+      /^[\t ]*(((\/\/|\#)[\t ]*([A-Z][A-Z0-9\t _-]+)[\t ]*:)[\t ]*[^-])(.*)$/gm;
+    const lineMarkRegex =
+      /^[\t ]*((\/\/|\#)[\t ]*([A-Z][A-Z0-9\t _-]+)[\t ]*:[\t ]*-)(.*)$/gm;
 
     // const simpleMarkRegex = /(((\/\/|\#)\s*([A-Z][A-Z0-9_-\s]+)\s*:)\s*[^-])/g;
     // const lineMarkRegex = /((\/\/|\#)\s*([A-Z][A-Z0-9_-\s]+)\s*:\s*-)/g;
