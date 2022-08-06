@@ -6,6 +6,12 @@ This extension emulates XCode's `// MARK: -` comment decorations.
 
 ###### Theme: [Sequoia Moonlight](https://marketplace.visualstudio.com/items?itemName=wicked-labs.sequoia)
 
+# Installation
+
+Install it from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=everdrone.mark-meta-comments)
+
+# Usage
+
 Just write `// MARK: Foo` or to get a regular mark comment (without the horizontal separator) or `// MARK: - Foo` to get the horizontal separator.
 
 Any other word or combination of words can be put instead of `MARK`, like
