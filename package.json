@@ -2,7 +2,7 @@
 	"name": "mark-meta-comments",
 	"displayName": "Mark Meta Comments",
 	"description": "Highlighter for XCode style \"Mark\" separator comments.",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"publisher": "everdrone",
 	"license": "MIT",
 	"engines": {
@@ -25,12 +25,11 @@
 		"Other"
 	],
 	"keywords": [
-		"everdrone",
-		"xcode mark",
-		"meta comments",
-		"mark comment",
-		"meta comment",
-		"xcode comment"
+		"mark",
+		"meta",
+		"comment",
+		"xcode",
+		"annotation"
 	],
 	"activationEvents": [
 		"onStartupFinished"
