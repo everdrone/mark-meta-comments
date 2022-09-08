@@ -22,13 +22,17 @@ Any other word or combination of words can be put instead of `MARK`, like
 // SEE ALSO: - Bar
 
 # PYTHON COMMENTS: - Also work!
+
+#pragma mark - Foo
+
+// pragma mark - Bar
 ```
 
 ## Todo:
 
+- [x] Allow `#` comments
 - [ ] Add minimap decorators
 - [ ] Add "Go To Symbol" feature
-- [x] Allow `#` comments
 
 ## Contributing
 
