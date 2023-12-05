@@ -54,9 +54,9 @@ export function activate(context: vscode.ExtensionContext) {
 
     const text = activeEditor.document.getText();
 
-    const pragmaMarkNoneRegex = /^([\t ]*)((\/\/|\#)pragma\smark[\t ]*)(.*)$/gim;
-    const pragmaMarkAboveRegex = /^([\t ]*)((\/\/|\#)pragma\smark[\t ]+-)(.*)$/gim;
-    const pragmaMarkBelowRegex = /^([\t ]*)((\/\/|\#)pragma\smark[\t ]*)(.*)([\t ]+-[\t ]*)$/gim;
+    const pragmaMarkNoneRegex = /^([\t ]*)((\/\/|\#)[\t ]*pragma\smark[\t ]*:?[\t ]*)(.*)$/gim;
+    const pragmaMarkAboveRegex = /^([\t ]*)((\/\/|\#)[\t ]*pragma\smark[\t ]*:?[\t ]+-)(.*)$/gim;
+    const pragmaMarkBelowRegex = /^([\t ]*)((\/\/|\#)[\t ]*pragma\smark[\t ]*:?[\t ]*)(.*)([\t ]+-[\t ]*)$/gim;
     const lineMarkNoneRegex = /^[\t ]*((\/\/|\#)[\t ]*([A-Z][A-Z0-9\t _-]+)[\t ]*:[\t ]+)(.*)$/gm;
     const lineMarkAboveRegex = /^[\t ]*((\/\/|\#)[\t ]*([A-Z][A-Z0-9\t _-]+)[\t ]*:[\t ]+-)(.*)$/gm;
 		const lineMarkBelowRegex = /^[\t ]*((\/\/|\#)[\t ]*([A-Z][A-Z0-9\t _-]+)[\t ]*:[\t ]*)(.+)([\t ]+-[\t ]*)$/gm;
