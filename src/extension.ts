@@ -12,17 +12,9 @@ export function activate(context: vscode.ExtensionContext) {
 
   // MARK: - Decorator types
 
-  // marks without lines
-  const markDecorationType = vscode.window.createTextEditorDecorationType({
-    isWholeLine: true,
-    fontWeight: "bold",
-    // color: lineNumberColor,
-  });
-
   // marks with a - line above!
-  const markLineDecorationType = vscode.window.createTextEditorDecorationType({
+  const markLineAboveDecorationType = vscode.window.createTextEditorDecorationType({
     isWholeLine: true,
-    fontWeight: "bold",
     border: `
 		border: none;
 		border-top: 1px solid;
@@ -33,10 +25,23 @@ export function activate(context: vscode.ExtensionContext) {
     // color: lineNumberColor,
   });
 
+	  // marks with a - line below!
+	const markLineBelowDecorationType = vscode.window.createTextEditorDecorationType({
+    isWholeLine: true,
+    border: `
+		border: none;
+		border-bottom: 1px solid;
+		margin-bottom: 0px;
+		`,
+    // margin-bottom: -1px;
+    borderColor: lineNumberColor,
+    // color: lineNumberColor,
+  });
+
   // bold section of the mark comment
   const markBoldDecorationType = vscode.window.createTextEditorDecorationType({
     isWholeLine: false,
-    fontWeight: "normal !important",
+    fontWeight: "bold !important",
     // color: lineNumberColor,
   });
 
@@ -49,35 +54,24 @@ export function activate(context: vscode.ExtensionContext) {
 
     const text = activeEditor.document.getText();
 
-    const simpleMarkRegex = /^([\t ]*)((\/\/|\#)pragma\smark[\t ]*-)(.*)$/gim;
-    const lineMarkRegex =
-      /^[\t ]*((\/\/|\#)[\t ]*([A-Z][A-Z0-9\t _-]+)[\t ]*:[\t ]*-)(.*)$/gm;
+    const pragmaMarkNoneRegex = /^([\t ]*)((\/\/|\#)[\t ]*pragma\smark[\t ]+)(.*)$/gim;
+    const pragmaMarkAboveRegex = /^([\t ]*)((\/\/|\#)[\t ]*pragma\smark[\t ]+-)(.*)$/gim;
+    const pragmaMarkBelowRegex = /^([\t ]*)((\/\/|\#)[\t ]*pragma\smark[\t ]+)(.*)([\t ]+-[\t ]*)$/gim;
+    const lineMarkNoneRegex = /^[\t ]*((\/\/|\#)[\t ]*([A-Z][A-Z0-9\t _-]+):[\t ]+)(.*)$/gm;
+    const lineMarkAboveRegex = /^[\t ]*((\/\/|\#)[\t ]*([A-Z][A-Z0-9\t _-]+):[\t ]+-)(.*)$/gm;
+		const lineMarkBelowRegex = /^[\t ]*((\/\/|\#)[\t ]*([A-Z][A-Z0-9\t _-]+):[\t ]+)(.+)([\t ]+-[\t ]*)$/gm;
 
-    const lineMarks: vscode.DecorationOptions[] = [];
+    const lineMarksAbove: vscode.DecorationOptions[] = [];
+    const lineMarksBelow: vscode.DecorationOptions[] = [];
     const marksBold: vscode.DecorationOptions[] = [];
 
-    // MARK: - Match pragma marks
-
     let match;
-    while ((match = lineMarkRegex.exec(text))) {
-      const startPos = activeEditor.document.positionAt(match.index);
-      const endPos = activeEditor.document.positionAt(
-        match.index + match[0].length
-      );
 
-      const decoration = {
-        range: new vscode.Range(startPos, endPos),
-      };
-
-      lineMarks.push(decoration);
-      marksBold.push(decoration);
-    }
-
-    // MARK: - Match marks with lines
+    // MARK: - Match any mark
 
     match = null;
 
-    while ((match = simpleMarkRegex.exec(text))) {
+    while ((match = lineMarkNoneRegex.exec(text))) {
       const startPos = activeEditor.document.positionAt(match.index);
       const endPos = activeEditor.document.positionAt(
         match.index + match[0].length
@@ -87,11 +81,96 @@ export function activate(context: vscode.ExtensionContext) {
         range: new vscode.Range(startPos, endPos),
       };
 
-      lineMarks.push(decoration);
       marksBold.push(decoration);
     }
 
-    activeEditor.setDecorations(markLineDecorationType, lineMarks);
+    // MARK: - Match marks with lines above
+
+    match = null;
+
+    while ((match = lineMarkAboveRegex.exec(text))) {
+      const startPos = activeEditor.document.positionAt(match.index);
+      const endPos = activeEditor.document.positionAt(
+        match.index + match[0].length
+      );
+
+      const decoration = {
+        range: new vscode.Range(startPos, endPos),
+      };
+
+      lineMarksAbove.push(decoration);
+    }
+
+    // MARK: - Match marks with lines below
+
+    match = null;
+
+    while ((match = lineMarkBelowRegex.exec(text))) {
+      const startPos = activeEditor.document.positionAt(match.index);
+      const endPos = activeEditor.document.positionAt(
+        match.index + match[0].length
+      );
+
+      const decoration = {
+        range: new vscode.Range(startPos, endPos),
+      };
+
+      lineMarksBelow.push(decoration);
+    }
+
+    // MARK: - Match any pragma mark
+
+    match = null;
+
+    while ((match = pragmaMarkNoneRegex.exec(text))) {
+      const startPos = activeEditor.document.positionAt(match.index);
+      const endPos = activeEditor.document.positionAt(
+        match.index + match[0].length
+      );
+
+      const decoration = {
+        range: new vscode.Range(startPos, endPos),
+      };
+
+      marksBold.push(decoration);
+    }
+
+    // MARK: - Match pragma marks with lines above
+
+    match = null;
+
+    while ((match = pragmaMarkAboveRegex.exec(text))) {
+      const startPos = activeEditor.document.positionAt(match.index);
+      const endPos = activeEditor.document.positionAt(
+        match.index + match[0].length
+      );
+
+      const decoration = {
+        range: new vscode.Range(startPos, endPos),
+      };
+
+      lineMarksAbove.push(decoration);
+    }
+
+    // MARK: - Match pragma marks with lines below
+
+    match = null;
+
+    while ((match = pragmaMarkBelowRegex.exec(text))) {
+      const startPos = activeEditor.document.positionAt(match.index);
+      const endPos = activeEditor.document.positionAt(
+        match.index + match[0].length
+      );
+
+      const decoration = {
+        range: new vscode.Range(startPos, endPos),
+      };
+
+      lineMarksBelow.push(decoration);
+    }
+
+    activeEditor.setDecorations(markLineAboveDecorationType, lineMarksAbove);
+    activeEditor.setDecorations(markLineBelowDecorationType, lineMarksBelow);
     activeEditor.setDecorations(markBoldDecorationType, marksBold);
   }
 

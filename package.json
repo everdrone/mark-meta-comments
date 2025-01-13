@@ -2,7 +2,7 @@
 	"name": "mark-meta-comments",
 	"displayName": "Mark Meta Comments",
 	"description": "Highlighter for XCode style \"Mark\" separator comments.",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"publisher": "everdrone",
 	"license": "MIT",
 	"engines": {
@@ -43,10 +43,12 @@
 		"watch": "tsc -watch -p ./"
 	},
 	"devDependencies": {
+		"@types/mocha": "^10.0.10",
 		"@types/node": "^16.11.7",
 		"@types/vscode": "^1.32.0",
 		"@typescript-eslint/eslint-plugin": "^5.30.0",
 		"@typescript-eslint/parser": "^5.30.0",
+		"@vscode/test-electron": "^2.4.1",
 		"eslint": "^8.13.0",
 		"typescript": "^4.7.2"
 	}
